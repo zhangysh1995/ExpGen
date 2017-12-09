@@ -384,10 +384,8 @@ public class ExpressionGenerator {
 		if (this.useDecimalNumbers) {
 			return nextDouble(this.minNum, this.maxNum, nextInt(this.minDecimalPlaces, this.maxDecimalPlaces));
 
-		} else {
-			return nextInt(this.minNum, this.maxNum);
-
 		}
+		return nextInt(this.minNum, this.maxNum);
 	}
 
 	private double nextDouble(double min, double max, int decimalPlaces) {
