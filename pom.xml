@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mz</groupId>
 	<artifactId>ExpressionGenerator</artifactId>
-	<version>1.2</version>
+	<version>1.3</version>
 	<name>ExpressionGenerator</name>
 	<description>Random expression generator for Java</description>
 	<build>
