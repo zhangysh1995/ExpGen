@@ -12,10 +12,11 @@ import com.mz.expGen.operator.OperatorSum;
 
 public class ExpressionGenerator {
 
-	private Random seed;
 	private Random rnd;
 
-	private Operator[] operators = { new OperatorSum(), new OperatorSub(), new OperatorMul(), new OperatorDiv() };
+	private Operator[] operators = {
+			new OperatorSum(), new OperatorSub(), new OperatorMul(), new OperatorDiv()
+	};
 
 	private int length = 3;
 
@@ -28,14 +29,13 @@ public class ExpressionGenerator {
 	private int maxDecimalsInResult = -1;
 
 	private boolean useDecimalNumbers = false;
-    private boolean allowParentheses = true;
+	private boolean allowParentheses = true;
 
 	/**
 	 * Class used to generate random mathematical expressions
 	 */
 	public ExpressionGenerator() {
 		this.rnd = new Random();
-		this.seed = new Random();
 	}
 
 	/**
@@ -43,8 +43,7 @@ public class ExpressionGenerator {
 	 * 
 	 * @return generated expressions
 	 * @throws IllegalArgumentException
-	 *             if only available operator is divide and only number in bounds is
-	 *             0
+	 *             if only available operator is divide and only number in bounds is 0
 	 */
 	public Expression generate() throws IllegalArgumentException {
 		boolean notOnlyDiv = true;
@@ -84,11 +83,11 @@ public class ExpressionGenerator {
 					continue;
 				}
 
-                sb.append(" ").append(operator.getCharacter()).append(" ");
+				sb.append(" ").append(operator.getCharacter()).append(" ");
 				// Appends the generated operator
 
 				boolean inBrackets = false;
-                if (this.rnd.nextBoolean() && i != this.length - 1 && allowParentheses) {
+				if (this.rnd.nextBoolean() && i != this.length - 1 && allowParentheses) {
 					sb.append("(");
 					inBrackets = true;
 					brackets++;
@@ -129,17 +128,17 @@ public class ExpressionGenerator {
 
 			} catch (Exception e) {
 				e.printStackTrace();
-            }
+			}
 		}
 		return result;
 	}
 
 	/**
-	 * Sets operators that will be used in expression. Note that setting that to
-	 * only divide might cause conflicts with the generator when some settings (for
-	 * example allowDecimalResult to false) are applied, causing generator to take
-	 * really long to generate expressions or even crash. Default operators are sum,
-	 * subtract, multiply and divide
+	 * Sets operators that will be used in expression. Note that setting that to only
+	 * divide might cause conflicts with the generator when some settings (for example
+	 * allowDecimalResult to false) are applied, causing generator to take really long to
+	 * generate expressions or even crash. Default operators are sum, subtract, multiply
+	 * and divide
 	 * 
 	 * @param operators
 	 *            array of operators
@@ -157,18 +156,20 @@ public class ExpressionGenerator {
 	}
 
 	/**
-	 * Sets maximal and minimal random number used in expressions. Default max is
-	 * 100 and min is 1
+	 * Sets maximal and minimal random number used in expressions. Default max is 100 and
+	 * min is 1
 	 * 
 	 * @param minNum
 	 *            new maximal number
 	 * @param maxNum
 	 *            new maximal number
 	 * @return self, allowing chain methods
+	 * @throws IllegalArgumentException
+	 *             if {@code maxNum} is less than {@code minNum}
 	 */
 	public ExpressionGenerator setBounds(int minNum, int maxNum) throws IllegalArgumentException {
 		if (maxNum < minNum) {
-			throw new IllegalArgumentException("Mininal number must be smaller than maximal number!");
+			throw new IllegalArgumentException("Minimal number must be smaller than maximal number!");
 		}
 
 		this.maxNum = maxNum;
@@ -206,6 +207,7 @@ public class ExpressionGenerator {
 	 */
 	public ExpressionGenerator setLength(int length) {
 		this.length = length;
+
 		return this;
 	}
 
@@ -218,12 +220,12 @@ public class ExpressionGenerator {
 	 *            maximal length
 	 * @return self, allowing chain methods
 	 * @throws IllegalArgumentException
-	 *             if maxLength is smaller than minLength or if one of the arguments
-	 *             is lesser than 1
+	 *             if maxLength is smaller than minLength or if one of the arguments is
+	 *             lesser than 1
 	 */
 	public ExpressionGenerator setRandomLength(int minLength, int maxLength) throws IllegalArgumentException {
 		if (maxLength < minLength) {
-			throw new IllegalArgumentException("Mininal length must be smaller than maximal length!");
+			throw new IllegalArgumentException("Minimal length must be smaller than maximal length!");
 		}
 
 		if (minLength < 1 || maxLength < 1) {
@@ -241,20 +243,20 @@ public class ExpressionGenerator {
 	 * @return self, allowing chain methods
 	 */
 	public ExpressionGenerator setSeed(long seed) {
-		this.seed = new Random(seed);
 		this.rnd = new Random(seed);
+
 		return this;
 	}
 
 	/**
-	 * This will remove the custom seed and set a random seed as new random
-	 * generator seed. Default is random
+	 * This will remove the custom seed and set a random seed as new random generator
+	 * seed. Default is random
 	 * 
 	 * @return self, allowing chain methods
 	 */
 	public ExpressionGenerator undoSeed() {
-		this.seed = new Random();
 		this.rnd = new Random();
+
 		return this;
 	}
 
@@ -271,20 +273,24 @@ public class ExpressionGenerator {
 	}
 
 	/**
-	 * Sets decimal places bounds. This will have no effect if useDecimalNumbers is
-	 * set to false. Set both to -1 to disable decimal place capping. Default max is
-	 * 2 and min is 1
+	 * Sets decimal places bounds. This will have no effect if useDecimalNumbers is set
+	 * to false. Set both to -1 to disable decimal place capping. Default max is 2 and
+	 * min is 1.
 	 * 
 	 * @param minDecimalPlaces
 	 *            minimal decimal places
 	 * @param maxDecimalPlaces
 	 *            maximal decimal places
 	 * @return self, allowing chain methods
+	 * @throws IllegalArgumentException
+	 *             if {@code maxDecimalPlaces} is less than {@code minDecimalPlaces}, if
+	 *             only one of them is {@code -1} or is either of them is below
+	 *             {@code -1}
 	 */
 	public ExpressionGenerator setDecimalPlacesBounds(int minDecimalPlaces, int maxDecimalPlaces)
 			throws IllegalArgumentException {
 		if (maxDecimalPlaces < minDecimalPlaces) {
-			throw new IllegalArgumentException("Mininal decimal places must be smaller than maximal decimal places!");
+			throw new IllegalArgumentException("Minimal decimal places must be smaller than maximal decimal places!");
 		}
 
 		if (maxDecimalPlaces == -1 || minDecimalPlaces == -1) {
@@ -294,7 +300,7 @@ public class ExpressionGenerator {
 		}
 
 		if (maxDecimalPlaces < -1 || minDecimalPlaces < -1) {
-			throw new IllegalArgumentException("Minimal bounds are -1!");
+			throw new IllegalArgumentException("You can't set either of the bounds below -1!");
 		}
 
 		this.maxDecimalPlaces = maxDecimalPlaces;
@@ -304,14 +310,14 @@ public class ExpressionGenerator {
 	}
 
 	/**
-	 * Setting this to more than -1 will only allow numbers with a maximum of N
-	 * numbers in expression's result. Generating such expressions might take more
-	 * time as random expressions must be bruteforced. As a side-effect, expressions
-	 * will also probably contain way less division operators. Default if true
+	 * Setting this to more than -1 will only allow numbers with a maximum of N numbers
+	 * in expression's result. Generating such expressions might take more time as random
+	 * expressions must be bruteforced. As a side-effect, expressions will also probably
+	 * contain way less division operators. Default if true
 	 *
 	 * @param maxDecimalsInResult
-	 *            number of maximum decimal places allowed in expression's result,
-	 *            -1 to allow any number of decimal places
+	 *            number of maximum decimal places allowed in expression's result, -1 to
+	 *            allow any number of decimal places
 	 * @return self, allowing chain methods
 	 * @throws IllegalArgumentException
 	 *             if given parameter is less than -1
@@ -325,23 +331,28 @@ public class ExpressionGenerator {
 		return this;
 	}
 
-    /**
-     * Copy of {@link #setAllowBrackets(boolean)}, name changed.
-     */
-    public void setAllowParentheses(boolean allowallowParentheses) {
-        this.allowParentheses = allowallowParentheses;
-    }
+	/**
+	 * Set this to false to disable usage of brackets in generated expressions. Default
+	 * is true
+	 *
+	 * @param allowallowParentheses
+	 *            true to allow brackets, false to disallow brackets
+	 */
+	public void setAllowParentheses(boolean allowallowParentheses) {
+		this.allowParentheses = allowallowParentheses;
+	}
 
 	/**
-	 * Set this to false to disable usage of brackets in generated expressions.
-	 * Default is true
-     *
-     * @deprecated Use {@link #setAllowParentheses(boolean)} instead.
+	 * Set this to false to disable usage of brackets in generated expressions. Default
+	 * is true
+	 *
+	 * @deprecated Use {@link #setAllowParentheses(boolean)} instead.
 	 * @param allowBrackets
 	 *            true to allow brackets, false to disallow brackets
 	 */
+	@Deprecated
 	public void setAllowBrackets(boolean allowBrackets) {
-        this.allowParentheses = allowBrackets;
+		this.allowParentheses = allowBrackets;
 	}
 
 	public Operator[] getOperators() {
@@ -395,54 +406,34 @@ public class ExpressionGenerator {
 		return nextInt(this.minNum, this.maxNum);
 	}
 
-    private double nextDouble(double origin, double bound, int decimalPlaces) {
-		double r = (this.rnd.nextLong() >>> 11) * (0x1.0p-53);
+	private double nextDouble(double origin, double bound, int decimalPlaces) throws IllegalArgumentException {
+		if (origin > bound)
+			throw new IllegalArgumentException("Origin must not be higher than bound");
 
-        if (origin < bound) {
-			r = r * (bound - origin) + origin;
-			if (r >= bound)
-				r = Double.longBitsToDouble(Double.doubleToLongBits(bound) - 1);
-		}
+		if (origin == bound)
+			return origin;
 
-		if (decimalPlaces == -1) {
-			return r;
+		if (decimalPlaces == 0)
+			return nextInt((int) origin, (int) bound);
 
-		} else if (decimalPlaces == 0) {
-			return Math.round(r);
+		StringBuilder sb = new StringBuilder();
 
-		} else {
-			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < decimalPlaces; i++) {
-				sb.append("#");
-			}
-			DecimalFormat df = new DecimalFormat("#." + sb.toString());
-			df.setRoundingMode(RoundingMode.CEILING);
-			return Double.valueOf(df.format(Double.valueOf(r)).replaceAll(",", "."));
-		}
+		for (int i = 0; i < decimalPlaces; i++)
+			sb.append("#");
+
+		DecimalFormat df = new DecimalFormat("#." + sb.toString());
+		df.setRoundingMode(RoundingMode.HALF_EVEN);
+		return Double.valueOf(df.format(origin + (bound - origin) * rnd.nextDouble()).replaceAll(",", "."));
 	}
 
-    private int nextInt(int origin, int max) {
-		int r = mix32(this.seed.nextLong());
+	private int nextInt(int origin, int bound) throws IllegalArgumentException {
+		if (origin > bound)
+			throw new IllegalArgumentException("Origin must not be higher than bound");
 
-		int bound = max + 1;
-		if (origin < bound) {
-			int n = bound - origin, m = n - 1;
-			if ((n & m) == 0)
-				r = (r & m) + origin;
-			else if (n > 0) {
-				for (int u = r >>> 1; u + m - (r = u % n) < 0; u = mix32(this.seed.nextLong()) >>> 1)
-					;
-				r += origin;
-			} else {
-				while (r < origin || r >= bound)
-					r = mix32(this.seed.nextLong());
-			}
-		}
-		return r;
+		if (origin == bound)
+			return origin;
+
+		return origin + rnd.nextInt(bound - origin + 1);
 	}
 
-	private static int mix32(long z) {
-		z = (z ^ (z >>> 33)) * 0xff51afd7ed558ccdL;
-		return (int) (((z ^ (z >>> 33)) * 0xc4ceb9fe1a85ec53L) >>> 32);
-	}
 }
